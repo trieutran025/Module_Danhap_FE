@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import HomePage from "../src/componet/HomePage";
+import LoginPage from "../src/componet/Login";
+import AdminDashboard from "../src/componet/AdminDashboard";
 
-function App() {
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Hàm xử lý đăng nhập
+  const handleLogin = () => {
+    setIsAuthenticated(true); // Đánh dấu người dùng đã đăng nhập
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <AdminDashboard /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
