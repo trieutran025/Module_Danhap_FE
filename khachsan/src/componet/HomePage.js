@@ -1,25 +1,32 @@
-import React from 'react';
-import '../../src/componet/css/homePage.css';  // Import file CSS dành riêng cho HomePage
+  import React from 'react';
+  import '../../src/componet/css/homePage.css';  // Import file CSS dành riêng cho HomePage
 
 
-const HomePage = () => {
-  return (
-    <div className="container">
-      <div className="overlay"></div>
-      <div className="content">
-        <h1>Chào mừng đến với Trang Chủ</h1>
-        <p>Khám phá thế giới mới của chúng tôi. Đăng ký ngay để trải nghiệm những điều tuyệt vời!</p>
-        <div className="buttons">
-          <a href="/login" className="button button-primary">Đăng nhập</a>
-          <a href="/register" className="button button-secondary">Đăng ký</a>
+  function Home() {
+    return (
+        <div className="Home">
+          <div className="Home-container">
+            <div>Room</div>
+            <div className="Home-login" style={{
+            }}>
+              <a href="/login" >Login</a>
+              <a href="/register">Register</a>
+            </div>
+          </div>
+          <header className="Home-header">
+            <div className='Home-image'>
+               <div className='Home-moon'>
+                <p style={{
+                  color: "black",
+                  fontSize: "28px",
+                  fontFamily: "fantasy"
+                }}>The Moon</p>
+               </div>
+            </div>
+          </header>
         </div>
-      </div>
-      <div className="footer">
-        © 2024 Công ty của bạn. Tất cả các quyền được bảo lưu.
-      </div>
-    </div>
-  );
-};
-
-export default HomePage;
+      );
+  }
+  
+  export default Home;
 
