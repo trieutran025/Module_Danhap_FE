@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect } from "react";
 import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from '../services/EmployeeService';
+=======
+import React,{useState} from "react";
+
+>>>>>>> Stashed changes
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("employees");
