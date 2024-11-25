@@ -1,48 +1,72 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService'; // Đảm bảo authService.login được định nghĩa
+import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
 import '../componet/css/Login.css';
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState(''); // Liên kết với input
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Ngăn hành vi mặc định của form
+    e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      // Gọi hàm đăng nhập từ authService
-      const response = await authService.login(username, password);
+        // Gọi API đăng nhập
+        const response = await authService.login(username, password);
 
-      console.log('Response:', response);
-      onLogin();
-      // window.alert("Success");
-      navigate('/dashboard'); // Chuyển hướng tới trang Dashboard
+        // Kiểm tra response hợp lệ
+        if (response && response.access_token) {
+            // Lưu token và vai trò vào localStorage
+            localStorage.setItem('token', response.access_token);
+            const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
+
+            if (userRole) {
+                localStorage.setItem('role', userRole);
+                console.log('User Role:', userRole);
+
+                // Gọi onLogin trước khi điều hướng
+                onLogin(userRole); // Cập nhật role khi login thành công
+
+                // Điều hướng dựa trên vai trò
+                switch (userRole) {
+                    case 'ROLE_ADMIN':
+                        navigate('/admin-dashboard');
+                        break;
+                    case 'ROLE_CUSTOMER':
+                        navigate('/customer-dashboard');
+                        break;
+                    case 'ROLE_MANAGER':
+                        navigate('/manager-dashboard');
+                        break;
+                    default:
+                        navigate('/');
+                }
+            } else {
+                setError('Vai trò người dùng không xác định.');
+            }
+        } else {
+            setError('Đăng nhập thất bại. Không nhận được token.');
+        }
     } catch (err) {
-      setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
-      console.error(err);
+        setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+        console.error('Error:', err);
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
+
 
   return (
     <div className="App">
       <header className="App-header">
         <div className="app-image">
           <div className="app-moon">
-            <p
-              style={{
-                color: 'black',
-                fontSize: '28px',
-                fontFamily: 'fantasy',
-              }}
-            >
+            <p style={{ color: 'black', fontSize: '28px', fontFamily: 'fantasy' }}>
               The Moon
             </p>
           </div>
@@ -56,7 +80,7 @@ const Login = ({ onLogin }) => {
               id="username"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} // Cập nhật state username
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
 
@@ -66,19 +90,15 @@ const Login = ({ onLogin }) => {
               id="password"
               placeholder="6+ characters"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // Cập nhật state password
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
 
-            <button
-              type="submit"
-              className="login-button"
-              disabled={isLoading} // Ngăn người dùng nhấn khi đang xử lý
-            >
+            <button type="submit" className="login-button" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Login'}
             </button>
           </form>
-          {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi */}
+          {error && <p className="error-message">{error}</p>}
           <a href="/register">Create Account</a>
         </div>
       </header>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../componet/css/CustomerManagement.css'; // Assuming your CSS file is in the same directory
 
-const API_URL = 'http://localhost:5000/api/customers'; // Replace with your API URL
+const API_URL = 'http://localhost:8080/api/customers'; // Replace with your API URL
 
 const CustomerManagement = () => {
   const [customers, setCustomers] = useState([]);
