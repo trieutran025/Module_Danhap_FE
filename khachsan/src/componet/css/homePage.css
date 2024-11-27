@@ -30,7 +30,7 @@
   width: 100%;
   height: 100vh;
   background-color: black;
-  background-image: url("../../../public/hotel.png");
+  /* background-image: url("../../"); */
   display: flex;
   align-items: center;
   justify-content: center;

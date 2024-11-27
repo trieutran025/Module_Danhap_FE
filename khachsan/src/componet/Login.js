@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
+import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
 import '../componet/css/Login.css';
 
 const Login = ({ onLogin }) => {
@@ -10,56 +11,70 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Handle login for username and password
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-        // Gọi API đăng nhập
-        const response = await authService.login(username, password);
+      const response = await authService.login(username, password);
+      if (response && response.access_token) {
+       localStorage.setItem("token",response.access_token);
+        const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
+        console.log(response.token)
+        if (userRole) {
+          localStorage.setItem('role', userRole);
+          console.log('User role:', localStorage.getItem('role'));
+          console.log("token",localStorage.getItem('token'))
+          console.log(userRole)
+          console.log(response.
+            access_token)
+          console.log(response)
+          onLogin(userRole); // Cập nhật role khi login thành công
 
-        // Kiểm tra response hợp lệ
-        if (response && response.access_token) {
-            // Lưu token và vai trò vào localStorage
-            localStorage.setItem('token', response.access_token);
-            const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
-
-            if (userRole) {
-                localStorage.setItem('role', userRole);
-                console.log('User Role:', userRole);
-
-                // Gọi onLogin trước khi điều hướng
-                onLogin(userRole); // Cập nhật role khi login thành công
-
-                // Điều hướng dựa trên vai trò
-                switch (userRole) {
-                    case 'ROLE_ADMIN':
-                        navigate('/admin-dashboard');
-                        break;
-                    case 'ROLE_CUSTOMER':
-                        navigate('/customer-dashboard');
-                        break;
-                    case 'ROLE_MANAGER':
-                        navigate('/manager-dashboard');
-                        break;
-                    default:
-                        navigate('/');
-                }
-            } else {
-                setError('Vai trò người dùng không xác định.');
-            }
+          switch (userRole) {
+            case 'ROLE_ADMIN':
+              navigate('/admin-dashboard');
+              break;
+            case 'ROLE_CUSTOMER':
+              navigate('/customer-dashboard');
+              break;
+            case 'ROLE_MANAGER':
+              navigate('/manager-dashboard');
+              break;
+            default:
+              navigate('/');
+          }
         } else {
-            setError('Đăng nhập thất bại. Không nhận được token.');
+          setError('Vai trò người dùng không xác định.');
         }
+      } else {
+        setError('Đăng nhập thất bại. Không nhận được token.');
+      }
     } catch (err) {
-        setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
-        console.error('Error:', err);
+      setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+      console.error('Error:', err);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
 
+  // Handle Google login callback
+  const handleGoogleLogin = async (response) => {
+    try {
+      const googleToken = response.credential;
+      const userInfo = await authService.googleLogin(googleToken);  // Backend cần xử lý token này
+      localStorage.setItem('token', userInfo.access_token);
+      localStorage.setItem('role', userInfo.roles[0]);
+
+      // Điều hướng theo vai trò
+      navigate(userInfo.roles.includes('ROLE_ADMIN') ? '/admin-dashboard' : '/');
+    } catch (err) {
+      setError('Đăng nhập với Google thất bại.');
+      console.error('Error:', err);
+    }
+  };
 
   return (
     <div className="App">
@@ -83,7 +98,6 @@ const Login = ({ onLogin }) => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -93,11 +107,24 @@ const Login = ({ onLogin }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-
             <button type="submit" className="login-button" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Login'}
             </button>
           </form>
+
+          {/* Google Login Button */}
+          <div className="social-login">
+          <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Google
+            </a>
+          </div>
+
+          <div className="social-login">
+            <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Facebook
+            </a>
+          </div>
+
           {error && <p className="error-message">{error}</p>}
           <a href="/register">Create Account</a>
         </div>

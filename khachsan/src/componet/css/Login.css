@@ -112,4 +112,36 @@
 .login-container a:hover {
   text-decoration: underline;
 }
+.social-login {
+  margin-top: 20px;
+}
+
+.fb-login-link,
+.google-login-link {
+  display: inline-block;
+  width: auto; 
+  padding: 8px 15px; 
+  margin: 5px 0;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px; 
+}
+
+
+.fb-login-link {
+  background-color: #3b5998;
+}
+
+.google-login-link {
+  background-color: #db4437;
+}
+
+.fb-login-link i,
+.google-login-link i {
+  margin-right: 10px;
+}
+
 
