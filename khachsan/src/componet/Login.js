@@ -1,33 +1,78 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService'; // Đảm bảo authService.login được định nghĩa
+import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
+import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
 import '../componet/css/Login.css';
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState(''); // Liên kết với input
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Handle login for username and password
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Ngăn hành vi mặc định của form
+    e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      // Gọi hàm đăng nhập từ authService
       const response = await authService.login(username, password);
+      if (response && response.access_token) {
+       localStorage.setItem("token",response.access_token);
+        const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
+        console.log(response.token)
+        if (userRole) {
+          localStorage.setItem('role', userRole);
+          console.log('User role:', localStorage.getItem('role'));
+          console.log("token",localStorage.getItem('token'))
+          console.log(userRole)
+          console.log(response.
+            access_token)
+          console.log(response)
+          onLogin(userRole); // Cập nhật role khi login thành công
 
-      console.log('Response:', response);
-      onLogin();
-      // window.alert("Success");
-      navigate('/dashboard'); // Chuyển hướng tới trang Dashboard
+          switch (userRole) {
+            case 'ROLE_ADMIN':
+              navigate('/admin-dashboard');
+              break;
+            case 'ROLE_CUSTOMER':
+              navigate('/customer-dashboard');
+              break;
+            case 'ROLE_MANAGER':
+              navigate('/manager-dashboard');
+              break;
+            default:
+              navigate('/');
+          }
+        } else {
+          setError('Vai trò người dùng không xác định.');
+        }
+      } else {
+        setError('Đăng nhập thất bại. Không nhận được token.');
+      }
     } catch (err) {
       setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
-      console.error(err);
+      console.error('Error:', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Handle Google login callback
+  const handleGoogleLogin = async (response) => {
+    try {
+      const googleToken = response.credential;
+      const userInfo = await authService.googleLogin(googleToken);  // Backend cần xử lý token này
+      localStorage.setItem('token', userInfo.access_token);
+      localStorage.setItem('role', userInfo.roles[0]);
+
+      // Điều hướng theo vai trò
+      navigate(userInfo.roles.includes('ROLE_ADMIN') ? '/admin-dashboard' : '/');
+    } catch (err) {
+      setError('Đăng nhập với Google thất bại.');
+      console.error('Error:', err);
     }
   };
 
@@ -36,13 +81,7 @@ const Login = ({ onLogin }) => {
       <header className="App-header">
         <div className="app-image">
           <div className="app-moon">
-            <p
-              style={{
-                color: 'black',
-                fontSize: '28px',
-                fontFamily: 'fantasy',
-              }}
-            >
+            <p style={{ color: 'black', fontSize: '28px', fontFamily: 'fantasy' }}>
               The Moon
             </p>
           </div>
@@ -56,29 +95,37 @@ const Login = ({ onLogin }) => {
               id="username"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} // Cập nhật state username
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
-
             <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
               placeholder="6+ characters"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // Cập nhật state password
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-
-            <button
-              type="submit"
-              className="login-button"
-              disabled={isLoading} // Ngăn người dùng nhấn khi đang xử lý
-            >
+            <button type="submit" className="login-button" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Login'}
             </button>
           </form>
-          {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi */}
+
+          {/* Google Login Button */}
+          <div className="social-login">
+          <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Google
+            </a>
+          </div>
+
+          <div className="social-login">
+            <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Facebook
+            </a>
+          </div>
+
+          {error && <p className="error-message">{error}</p>}
           <a href="/register">Create Account</a>
         </div>
       </header>

@@ -1,10 +1,9 @@
 module.exports = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}", // Tùy thuộc vào cấu trúc dự án của bạn
+    "./src/**/*.{html,js,ts,jsx,tsx}",  // Đảm bảo Tailwind kiểm tra các file cần thiết
   ],
   theme: {
     extend: {},
   },
   plugins: [],
 }
-

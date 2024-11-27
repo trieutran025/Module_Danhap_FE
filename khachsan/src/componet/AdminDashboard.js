@@ -1,44 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from '../services/EmployeeService';
+import { debounce } from "lodash";
+import '../componet/css/AdminDashboard.css'
+import * as authService from "../services/authService"
+import { data } from "autoprefixer";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("employees");
-  const [employees, setEmployees] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", position: "Nhân viên" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", position: "Quản lý" },
-    { id: 3, name: "Alice Johnson", email: "alice@example.com", position: "Giám đốc" },
-    { id: 4, name: "Bob Brown", email: "bob@example.com", position: "Nhân viên" },
-    { id: 5, name: "Emily White", email: "emily@example.com", position: "Quản lý" },
-  ]);
+  const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [isAddingEmployee, setIsAddingEmployee] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);  // Added loading state
   const itemsPerPage = 3;
+
+  const handleSearch = debounce((term) => {
+    setSearchTerm(term);
+  }, 500);
 
   const filteredEmployees = employees.filter(
     (employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase())  );
+
+  useEffect(() => {
+    const loadEmployees = async () => {
+      setLoading(true); // Set loading to true
+      try {
+        const data = await fetchEmployees();
+        console.log("Fetched employees:", data); // Check data in the console
+        setEmployees(data);
+      } catch (error) {
+        console.log(data)
+        console.error("Error fetching employees:", error);
+      } finally {
+        setLoading(false); // Set loading to false
+      }
+    };
+    loadEmployees();
+  }, []);
 
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
-  const handleAddEmployee = (newEmployee) => {
-    const id = employees.length > 0 ? Math.max(...employees.map((e) => e.id)) + 1 : 1;
-    setEmployees([...employees, { ...newEmployee, id }]);
-    setIsAddingEmployee(false);
+  const handleAddEmployee = async (newEmployee) => {
+    try {
+      const addedEmployee = await addEmployee(newEmployee);
+      setEmployees([...employees, addedEmployee]);
+      setIsAddingEmployee(false);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+    }
   };
 
-  const handleEditEmployee = (updatedEmployee) => {
-    setEmployees(
-      employees.map((e) => (e.id === updatedEmployee.id ? updatedEmployee : e))
-    );
-    setEditingEmployee(null);
+  const handleEditEmployee = async (updatedEmployee) => {
+    try {
+      const updated = await updateEmployee(updatedEmployee);
+      setEmployees(
+        employees.map((e) => (e.id === updated.id ? updated : e))
+      );
+      setEditingEmployee(null);
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
   };
 
-  const handleDeleteEmployee = (id) => {
-    setEmployees(employees.filter((e) => e.id !== id));
+  const handleDeleteEmployee = async (id) => {
+    try {
+      await deleteEmployee(id);
+      setEmployees(employees.filter((e) => e.id !== id));
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
   };
 
   const displayedEmployees = filteredEmployees.slice(
@@ -72,140 +105,108 @@ const AdminDashboard = () => {
 
       {activeTab === "employees" && (
         <div className="employees">
-          <div className="actions">
-            <input
-              type="text"
-              placeholder="Tìm kiếm nhân viên..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-            <button
-              className="add-button"
-              onClick={() => {
-                setIsAddingEmployee(true);
-                setEditingEmployee(null);
-              }}
-            >
-              Thêm nhân viên
-            </button>
-          </div>
+          {loading ? (
+            <p>Loading employees...</p> // Display loading message
+          ) : (
+            <>
+              <div className="actions">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm nhân viên..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <button
+                  className="add-button"
+                  onClick={() => {
+                    setIsAddingEmployee(true);
+                    setEditingEmployee(null);
+                  }}
+                >
+                  Thêm nhân viên
+                </button>
+              </div>
 
-          {isAddingEmployee && !editingEmployee && (
-            <form
-              className="add-employee-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                handleAddEmployee({
-                  name: formData.get("name"),
-                  email: formData.get("email"),
-                  position: formData.get("position"),
-                });
-              }}
-            >
-              <input type="text" name="name" placeholder="Tên" required />
-              <input type="email" name="email" placeholder="Email" required />
-              <input type="text" name="position" placeholder="Chức vụ" required />
-              <button type="submit">Thêm</button>
-              <button type="button" onClick={() => setIsAddingEmployee(false)}>
-                Hủy
-              </button>
-            </form>
+              {isAddingEmployee && !editingEmployee && (
+                <form
+                  className="add-employee-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    handleAddEmployee({
+                      name: formData.get("name"),
+                      email: formData.get("email"),
+                      position: formData.get("position"),
+                      phone: formData.get("phone"),
+                      address: formData.get("address"),
+                    });
+                  }}
+                >
+                  <input type="text" name="name" placeholder="Tên" required />
+                  <input type="email" name="email" placeholder="Email" required />
+                  <input type="text" name="position" placeholder="Chức vụ" required />
+                  <input type="text" name="phone" placeholder="Số điện thoại" />
+                  <input type="text" name="address" placeholder="Địa chỉ" />
+                  <button type="submit">Thêm</button>
+                  <button type="button" onClick={() => setIsAddingEmployee(false)}>
+                    Hủy
+                  </button>
+                </form>
+              )}
+
+              <table className="employee-table">
+                <thead>
+                  <tr>
+                    <th>Tên</th>
+                    <th>Email</th>
+                    <th>Chức vụ</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {displayedEmployees.map((employee) => (
+                    <tr key={employee.id}>
+                      <td>{employee.name}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.position}</td>
+                      <td className="action-buttons">
+                        <button
+                          onClick={() => {
+                            setEditingEmployee(employee);
+                            setIsAddingEmployee(false);
+                          }}
+                          className="edit-button"
+                        >
+                          Sửa
+                        </button>
+                        <button
+                          onClick={() => handleDeleteEmployee(employee.id)}
+                          className="delete-button"
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    className={`page-button ${
+                      currentPage === i + 1 ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
-
-          {editingEmployee && (
-            <form
-              className="edit-employee-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                handleEditEmployee({
-                  id: editingEmployee.id,
-                  name: formData.get("name"),
-                  email: formData.get("email"),
-                  position: formData.get("position"),
-                });
-              }}
-            >
-              <input
-                type="text"
-                name="name"
-                defaultValue={editingEmployee.name}
-                placeholder="Tên"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                defaultValue={editingEmployee.email}
-                placeholder="Email"
-                required
-              />
-              <input
-                type="text"
-                name="position"
-                defaultValue={editingEmployee.position}
-                placeholder="Chức vụ"
-                required
-              />
-              <button type="submit">Lưu</button>
-              <button type="button" onClick={() => setEditingEmployee(null)}>
-                Hủy
-              </button>
-            </form>
-          )}
-
-          <table className="employee-table">
-            <thead>
-              <tr>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Chức vụ</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayedEmployees.map((employee) => (
-                <tr key={employee.id}>
-                  <td>{employee.name}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.position}</td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        setEditingEmployee(employee);
-                        setIsAddingEmployee(false);
-                      }}
-                      className="edit-button"
-                    >
-                      Sửa
-                    </button>
-                    <button
-                      onClick={() => handleDeleteEmployee(employee.id)}
-                      className="delete-button"
-                    >
-                      Xóa
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="pagination">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                className={`page-button ${
-                  currentPage === i + 1 ? "active" : ""
-                }`}
-                onClick={() => setCurrentPage(i + 1)}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
         </div>
       )}
 
@@ -228,4 +229,5 @@ const AdminDashboard = () => {
     </div>
   );
 };
+
 export default AdminDashboard;
