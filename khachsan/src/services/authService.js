@@ -12,13 +12,13 @@ const login = async (username, password) => {
       password,
     });
 
-    // Kiểm tra và lưu token, vai trò, thời gian hết hạn vào localStorage
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
-    if (response.data.roles) {
-      localStorage.setItem('role', response.data.roles[0]); // Giả định có ít nhất 1 vai trò
-    }
+    // // Kiểm tra và lưu token, vai trò, thời gian hết hạn vào localStorage
+    // if (response.access_token) {
+    //   localStorage.setItem('access_token', response.access_token);
+    // }
+    // if (response.data.roles) {
+    //   localStorage.setItem('role', response.data.roles[0]); // Giả định có ít nhất 1 vai trò
+    // }
 
     return response.data; // Trả về dữ liệu phản hồi để xử lý vai trò, trạng thái, v.v.
   } catch (error) {
@@ -48,6 +48,13 @@ const login = async (username, password) => {
     throw new Error(errorMessage);
   }
 };
+export function getToken() {
+  let token = localStorage.getItem('token');
+  if (!token) {
+      token = sessionStorage.getItem('token');
+  }
+  return token;
+}
 
 export default {
   login,
