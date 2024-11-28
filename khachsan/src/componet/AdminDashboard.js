@@ -1,7 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from '../services/EmployeeService';
+
 import '../componet/css/AdminDashboard.css';
+
+import { debounce } from "lodash";
+import '../componet/css/AdminDashboard.css'
+import * as authService from "../services/authService"
+import { data } from "autoprefixer";
+
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("employees");
@@ -13,12 +20,14 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);  // Added loading state
   const itemsPerPage = 3;
 
+  const handleSearch = debounce((term) => {
+    setSearchTerm(term);
+  }, 500);
+
   const filteredEmployees = employees.filter(
     (employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase())  );
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -28,6 +37,7 @@ const AdminDashboard = () => {
         console.log("Fetched employees:", data); // Check data in the console
         setEmployees(data);
       } catch (error) {
+        console.log(data)
         console.error("Error fetching employees:", error);
       } finally {
         setLoading(false); // Set loading to false

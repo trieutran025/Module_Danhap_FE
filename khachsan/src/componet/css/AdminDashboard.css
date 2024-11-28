@@ -10,7 +10,20 @@ body {
   color: #333; /* Text dễ nhìn */
 }
 
-/* Container chính */
+/* ====================== Tổng thể giao diện ====================== */
+body {
+  background-color: #E3C1FF; /* Màu nền tím nhạt */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Chiều cao tối thiểu toàn màn hình */
+}
+
+/* ====================== Container chính ====================== */
 .admin-dashboard {
   max-width: 1100px;
   width: 100%;
@@ -34,10 +47,48 @@ body {
   color: #6c63ff; /* Màu tím đẹp */
   font-weight: bold;
   margin-bottom: 30px;
+
+  max-width: 1300px; /* Tối đa chiều rộng */
+  width: 100%;
+  background-color: #ffffff; /* Màu nền trắng */
+  padding: 30px;
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+  border-radius: 15px; /* Bo góc */
+  box-sizing: border-box; /* Đảm bảo không tràn nội dung */
 }
 
-/* Các nút điều hướng */
-.nav-buttons {
+/* ====================== Thanh điều hướng ====================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navbar-title {
+  font-size: 2.5rem; /* Kích thước chữ lớn */
+  color: #3498db; /* Màu xanh lam */
+}
+
+.logout-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #e74c3c; /* Màu đỏ */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Bo góc nút */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #c0392b; /* Màu đỏ đậm hơn khi hover */
+  transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+/* ====================== Tabs ====================== */
+.tabs {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -59,7 +110,27 @@ body {
   transform: translateY(-3px); /* Nổi nhẹ khi hover */
 }
 
-/* Ô tìm kiếm */
+.tab {
+  padding: 15px 25px;
+  font-size: 1.2rem;
+  color: #555; /* Màu xám */
+  background-color: transparent; /* Nền trong suốt */
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tab.active {
+  color: #2ecc71; /* Màu xanh lá */
+  border-bottom: 3px solid #2ecc71; /* Gạch chân */
+}
+
+.tab:hover {
+  color: #2ecc71; /* Đổi màu xanh lá khi hover */
+  border-bottom: 3px solid #2ecc71;
+}
+
+/* ====================== Ô tìm kiếm ====================== */
 .search-input {
   width: 100%;
   padding: 12px;
@@ -75,13 +146,19 @@ body {
   outline: none;
 }
 
-/* Bảng quản lý nhân viên */
-.employee-table {
-  width: 100%;
-  border-collapse: collapse;
+.search-input:hover, 
+.search-input:focus {
+  border-color: #3498db; /* Viền xanh lam khi hover/focus */
+  box-shadow: 0 3px 6px rgba(52, 152, 219, 0.4); /* Đổ bóng */
 }
 
-.employee-table th,
+/* ====================== Bảng quản lý nhân viên ====================== */
+.employee-table {
+  width: 100%;
+  border-collapse: collapse; /* Gộp đường viền */
+}
+
+.employee-table th, 
 .employee-table td {
   padding: 15px;
   text-align: left;
@@ -98,15 +175,26 @@ body {
 .employee-table tr:hover {
   background-color: #f9f9f9;
   transition: background-color 0.3s ease;
+  border-bottom: 1px solid #ddd; /* Viền dưới mỗi ô */
 }
 
-/* Nút Sửa và Xóa */
+.employee-table th {
+  background-color: #4CAF50; /* Nền xanh lá */
+  color: white; /* Chữ trắng */
+}
+
+.employee-table tr:hover td {
+  background-color: #d5f5e3; /* Nền xanh nhạt khi hover */
+  transition: background-color 0.3s ease;
+}
+
+/* ====================== Nút hành động ====================== */
 .action-buttons button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   font-size: 1rem;
   margin-right: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 6px; /* Bo góc */
   cursor: pointer;
   color: white;
   transition: all 0.3s ease;
@@ -123,9 +211,21 @@ body {
 .action-buttons button:hover {
   opacity: 0.9;
   transform: translateY(-2px); /* Hiệu ứng nổi */
+  color: white; /* Chữ trắng */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Pagination */
+.action-buttons .edit-button:hover {
+  background-color: #217dbb;
+  box-shadow: 0 4px 10px rgba(33, 125, 187, 0.4);
+}
+
+.action-buttons .delete-button:hover {
+  background-color: #c0392b;
+  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.4);
+}
+
+/* ====================== Phân trang ====================== */
 .pagination {
   display: flex;
   justify-content: center;
@@ -133,85 +233,75 @@ body {
 }
 
 .page-button {
-  background-color: transparent;
-  border: 1px solid #ddd;
+  background-color: transparent; /* Nền trong suốt */
+  border: 1px solid #ddd; /* Viền xám */
   padding: 10px 15px;
   margin: 0 5px;
-  border-radius: 5px;
+  border-radius: 5px; /* Bo góc */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .page-button:hover {
-  background-color: #6c63ff;
-  color: white;
-  border-color: #6c63ff;
+  background-color: #007bff; /* Nền xanh lam khi hover */
+  color: white; /* Chữ trắng */
+  box-shadow: 0 3px 8px rgba(0, 86, 179, 0.5);
 }
 
 .page-button.active {
-  background-color: #28a745;
-  color: white;
-  border: none;
+  background-color: #1abc9c; /* Nút trang hiện tại màu xanh lá */
+  color: white; /* Chữ trắng */
+  border-color: #16a085;
+  transform: scale(1.1); /* Phóng to nhẹ */
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-/* Form Thêm/Sửa */
-.add-employee-form input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+/* ====================== Form thêm nhân viên ====================== */
+.add-employee-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
+  border-radius: 10px;
+}
+
+.add-employee-form input,
+.add-employee-form select,
+.add-employee-form button[type="submit"] {
+  padding: 12px;
   font-size: 1rem;
+  margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  transition: border-color 0.3s ease;
-}
-
-.add-employee-form input:focus {
-  border-color: #6c63ff;
-  outline: none;
-}
-
-.add-employee-form button {
-  padding: 12px 20px;
-  margin: 10px 5px 0;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .add-employee-form button[type="submit"] {
-  background-color: #28a745; /* Xanh */
+  background-color: #6c63ff;
   color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.add-employee-form button[type="button"] {
-  background-color: #e74c3c; /* Đỏ */
-  color: white;
+.add-employee-form button[type="submit"]:hover {
+  background-color: #5a50e4;
+  transform: translateY(-2px); /* Hiệu ứng nổi */
 }
 
-.add-employee-form button:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .admin-dashboard {
     padding: 20px;
   }
 
-  .employee-table th,
-  .employee-table td {
-    font-size: 0.9rem;
+  .navbar-title {
+    font-size: 2rem; /* Giảm kích thước tiêu đề */
   }
 
   .search-input {
-    width: 100%; /* Chiếm toàn bộ chiều ngang trên thiết bị nhỏ */
-  }
-
-  .pagination {
-    flex-wrap: wrap;
-    gap: 5px;
+    width: 100%;
   }
 }
+

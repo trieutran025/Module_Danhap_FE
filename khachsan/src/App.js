@@ -1,3 +1,6 @@
+
+  import "./App.css";
+
   import React, { useState, useEffect } from 'react';
   import {
     BrowserRouter as Router,
@@ -26,7 +29,11 @@
     const handleLogin = (userRole) => {
       setIsAuthenticated(true);
       setRole(userRole);
+
       localStorage.setItem('token', 'your-token-here'); // Giả sử token đã được lấy từ API
+
+      localStorage.setItem('token', localStorage.getItem('token')); // Giả sử token đã được lấy từ API
+
       localStorage.setItem('role', userRole);
     };
 
@@ -74,4 +81,7 @@
   };
 
 
+
   export default App;
+
+
