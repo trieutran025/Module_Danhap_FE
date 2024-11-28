@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
-import { GoogleLogin } from '@react-oauth/google'; // Import Google OAuth library
+import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
 import '../componet/css/Login.css';
 
 const Login = ({ onLogin }) => {
@@ -19,14 +19,19 @@ const Login = ({ onLogin }) => {
 
     try {
       const response = await authService.login(username, password);
-
       if (response && response.access_token) {
-        localStorage.setItem('token', response.access_token);
+        sessionStorage.setItem("token",response.access_token);
         const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
-
+        console.log(response.token)
         if (userRole) {
-          localStorage.setItem('role', userRole);
-          onLogin(userRole);
+          sessionStorage.setItem('role', userRole);
+          console.log('User role:', localStorage.getItem('role'));
+          console.log("token",localStorage.getItem('token'))
+          console.log(userRole)
+          console.log(response.
+            access_token)
+          console.log(response)
+          onLogin(userRole); // Cập nhật role khi login thành công
 
           switch (userRole) {
             case 'ROLE_ADMIN':
@@ -42,13 +47,13 @@ const Login = ({ onLogin }) => {
               navigate('/');
           }
         } else {
-          setError('User role not identified.');
+          setError('Vai trò người dùng không xác định.');
         }
       } else {
-        setError('Login failed. Token not received.');
+        setError('Đăng nhập thất bại. Không nhận được token.');
       }
     } catch (err) {
-      setError('Login failed. Please check your credentials.');
+      setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
       console.error('Error:', err);
     } finally {
       setIsLoading(false);
@@ -59,9 +64,9 @@ const Login = ({ onLogin }) => {
   const handleGoogleLogin = async (response) => {
     try {
       const googleToken = response.credential;
-      const userInfo = await authService.googleLogin(googleToken); // Backend cần xử lý token này
-      localStorage.setItem('token', userInfo.access_token);
-      localStorage.setItem('role', userInfo.roles[0]);
+      const userInfo = await authService.googleLogin(googleToken);  // Backend cần xử lý token này
+      sessionStorage.setItem('token', userInfo.access_token);
+      sessionStorage.setItem('role', userInfo.roles[0]);
 
       // Điều hướng theo vai trò
       navigate(userInfo.roles.includes('ROLE_ADMIN') ? '/admin-dashboard' : '/');
@@ -72,53 +77,58 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <div className="login-card-header">
-          <h1>Welcome Back</h1>
-          <p>Login to continue</p>
+    <div className="App">
+      <header className="App-header">
+        <div className="app-image">
+          <div className="app-moon">
+            <p style={{ color: 'black', fontSize: '28px', fontFamily: 'fantasy' }}>
+              The Moon
+            </p>
+          </div>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
+        <div className="login-container">
+          <h1>Login Account</h1>
+          <form onSubmit={handleSubmit} method='post'>
             <label htmlFor="username">Username</label>
             <input
               type="text"
               id="username"
-              placeholder="Enter your username"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-          </div>
-          <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
-              placeholder="Enter your password"
+              placeholder="6+ characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
-          <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-        {error && <p className="error-message">{error}</p>}
-        <div className="login-footer">
-          <a href="/forgot-password">Forgot your password?</a>
-          <a href="/register">Create a new account</a>
+            <button type="submit" className="login-button" disabled={isLoading}>
+              {isLoading ? 'Loading...' : 'Login'}
+            </button>
+          </form>
 
           {/* Google Login Button */}
           <div className="social-login">
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() => setError('Google Login failed')}
-            />
+          <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Google
+            </a>
           </div>
+
+          <div className="social-login">
+            <a href="https://www.facebook.com" className="fb-login-link">
+              <i className="fab fa-facebook"></i> Login with Facebook
+            </a>
+          </div>
+
+          {error && <p className="error-message">{error}</p>}
+          <a href="/register">Create Account</a>
         </div>
-      </div>
+      </header>
     </div>
   );
 };
