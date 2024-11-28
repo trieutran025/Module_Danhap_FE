@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from '../services/EmployeeService';
+import { useNavigate } from "react-router-dom";
+import {
+  fetchEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from "../services/EmployeeService";
 import { debounce } from "lodash";
-import '../componet/css/AdminDashboard.css'
-import * as authService from "../services/authService"
+import "../componet/css/AdminDashboard.css";
+import authService from "../services/authService"; // Import authService để gọi logout
 import { data } from "autoprefixer";
 
 const AdminDashboard = () => {
@@ -12,7 +18,8 @@ const AdminDashboard = () => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [isAddingEmployee, setIsAddingEmployee] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);  // Added loading state
+  const [loading, setLoading] = useState(true); // Added loading state
+  const navigate = useNavigate();
   const itemsPerPage = 3;
 
   const handleSearch = debounce((term) => {
@@ -22,7 +29,8 @@ const AdminDashboard = () => {
   const filteredEmployees = employees.filter(
     (employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase())  );
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -32,7 +40,7 @@ const AdminDashboard = () => {
         console.log("Fetched employees:", data); // Check data in the console
         setEmployees(data);
       } catch (error) {
-        console.log(data)
+        console.log(data);
         console.error("Error fetching employees:", error);
       } finally {
         setLoading(false); // Set loading to false
@@ -56,9 +64,7 @@ const AdminDashboard = () => {
   const handleEditEmployee = async (updatedEmployee) => {
     try {
       const updated = await updateEmployee(updatedEmployee);
-      setEmployees(
-        employees.map((e) => (e.id === updated.id ? updated : e))
-      );
+      setEmployees(employees.map((e) => (e.id === updated.id ? updated : e)));
       setEditingEmployee(null);
     } catch (error) {
       console.error("Error updating employee:", error);
@@ -73,6 +79,19 @@ const AdminDashboard = () => {
       console.error("Error deleting employee:", error);
     }
   };
+  const handleLogout = async () => {
+    try {
+      await authService.logout(); // Gọi hàm logout trong service
+      // Điều hướng về trang đăng nhập
+      if (!sessionStorage.getItem("token") || sessionStorage.getItem("role")) {
+        navigate("/login");
+      } else {
+        console.log("Xoa chua thanh cong");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đăng xuất:", error);
+    }
+  };
 
   const displayedEmployees = filteredEmployees.slice(
     (currentPage - 1) * itemsPerPage,
@@ -83,7 +102,7 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <nav className="navbar">
         <h1 className="navbar-title">Admin Dashboard</h1>
-        <button className="logout-button" onClick={() => alert("Đăng xuất...")}>
+        <button className="logout-button" onClick={handleLogout}>
           Đăng xuất
         </button>
       </nav>
@@ -144,12 +163,25 @@ const AdminDashboard = () => {
                   }}
                 >
                   <input type="text" name="name" placeholder="Tên" required />
-                  <input type="email" name="email" placeholder="Email" required />
-                  <input type="text" name="position" placeholder="Chức vụ" required />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="position"
+                    placeholder="Chức vụ"
+                    required
+                  />
                   <input type="text" name="phone" placeholder="Số điện thoại" />
                   <input type="text" name="address" placeholder="Địa chỉ" />
                   <button type="submit">Thêm</button>
-                  <button type="button" onClick={() => setIsAddingEmployee(false)}>
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingEmployee(false)}
+                  >
                     Hủy
                   </button>
                 </form>
@@ -161,6 +193,8 @@ const AdminDashboard = () => {
                     <th>Tên</th>
                     <th>Email</th>
                     <th>Chức vụ</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
@@ -169,7 +203,13 @@ const AdminDashboard = () => {
                     <tr key={employee.id}>
                       <td>{employee.name}</td>
                       <td>{employee.email}</td>
-                      <td>{employee.position}</td>
+                      <td>
+                        {employee.roleName.length > 0
+                          ? employee.roleName[0].roleName
+                          : "Không có vai trò"}
+                      </td>
+                      <td>{employee.address}</td>
+                      <td>{employee.phone}</td>
                       <td className="action-buttons">
                         <button
                           onClick={() => {

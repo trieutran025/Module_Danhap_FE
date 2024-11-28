@@ -48,8 +48,32 @@ const login = async (username, password) => {
     throw new Error(errorMessage);
   }
 };
+const logout = async () => {
+  try {
+    // Gửi yêu cầu POST đến API logout
+    const response = await axios.post('http://localhost:8080/logout');
+
+    // Kiểm tra nếu đăng xuất thành công
+    if (response.status === 200 ) {
+      console.log("Đăng xuất thành công!");
+
+      // Xóa token khỏi localStorage
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('role');
+
+      // Chuyển hướng về trang login
+      window.location.href = '/login';
+    } else {
+      console.error("Lỗi khi đăng xuất:", response.data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi đăng xuất:", error);
+  }
+};
+
+
 export function getToken() {
-  let token = localStorage.getItem('token');
+  let token = sessionStorage.getItem('token');
   if (!token) {
       token = sessionStorage.getItem('token');
   }
@@ -58,4 +82,5 @@ export function getToken() {
 
 export default {
   login,
+  logout
 };

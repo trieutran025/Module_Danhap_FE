@@ -20,11 +20,11 @@ const Login = ({ onLogin }) => {
     try {
       const response = await authService.login(username, password);
       if (response && response.access_token) {
-       localStorage.setItem("token",response.access_token);
+        sessionStorage.setItem("token",response.access_token);
         const userRole = response.roles && Array.isArray(response.roles) ? response.roles[0] : null;
         console.log(response.token)
         if (userRole) {
-          localStorage.setItem('role', userRole);
+          sessionStorage.setItem('role', userRole);
           console.log('User role:', localStorage.getItem('role'));
           console.log("token",localStorage.getItem('token'))
           console.log(userRole)
@@ -65,8 +65,8 @@ const Login = ({ onLogin }) => {
     try {
       const googleToken = response.credential;
       const userInfo = await authService.googleLogin(googleToken);  // Backend cần xử lý token này
-      localStorage.setItem('token', userInfo.access_token);
-      localStorage.setItem('role', userInfo.roles[0]);
+      sessionStorage.setItem('token', userInfo.access_token);
+      sessionStorage.setItem('role', userInfo.roles[0]);
 
       // Điều hướng theo vai trò
       navigate(userInfo.roles.includes('ROLE_ADMIN') ? '/admin-dashboard' : '/');
@@ -88,7 +88,7 @@ const Login = ({ onLogin }) => {
         </div>
         <div className="login-container">
           <h1>Login Account</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} method='post'>
             <label htmlFor="username">Username</label>
             <input
               type="text"
