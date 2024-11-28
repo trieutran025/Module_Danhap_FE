@@ -18,16 +18,13 @@ const axiosInstance = axios.create({
 // Lấy danh sách nhân viên
 export const fetchEmployees = async () => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(token);  // Kiểm tra token
-    console.log("123213")
+    const token = sessionStorage.getItem('token');
     const response = await axios.get(
       `http://localhost:8080/api/employees`, {
         headers: { Authorization: `Bearer ${token}` }
       }
     );
-    console.log('1');
-    console.log(response.data);  // Kiểm tra dữ liệu nhận được từ API
+
     return response.data;  // Trả về dữ liệu từ API
   } catch (error) {
     console.error('Lỗi khi lấy danh sách nhân viên:', error.response ? error.response.data : error.message); // In ra lỗi nếu có
