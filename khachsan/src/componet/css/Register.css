@@ -1,84 +1,80 @@
-.App-register {
-    background-color: #F5F5F5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    font-size: calc(10px + 2vmin);
-    color: black;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   }
-
-.register-container {
-    width: 800px;
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  /* Code input */
+  input#fullName,#email,#password,#confirmPassword{
+  width: 360px;
+  height: 55.6px;
   }
-
-  .register-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #000;
+  .container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
   }
-
+  .card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  }
+  .card-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  }
+  .registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  }
   .form-group {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   }
-
-  .form-group .form-control {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+  label {
+  font-size: 14px;
+  color: #555;
   }
-
-  .form-control label {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #333;
+  input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
   }
-
-  .form-control input {
-    width: 90%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+  input:focus {
+  outline: none;
+  background-color: #e6f3ff;
   }
-
-  .form-control input::placeholder {
-    color: #aaa;
+  .submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
   }
-
-  .register-button {
-    width: 40%;
-    padding: 12px;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+  .submit-btn:hover {
+  background-color: #45a049;
   }
-
-  .register-button:hover {
-    background-color: #45a049;
+  .login-link {
+  text-align: center;
+  margin-top: 20px;
   }
-
-  .register-container a {
-    display: block;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #000;
-    text-decoration: none;
+  .login-link a {
+  color: #1a73e8;
+  text-decoration: none;
+  font-size: 14px;
   }
-
-  .register-container a:hover {
-    text-decoration: underline;
+  .login-link a:hover {
+  text-decoration: underline;
   }
