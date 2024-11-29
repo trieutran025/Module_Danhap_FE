@@ -26,7 +26,7 @@
 }
 
 .app-image {
-  width: 742px;
+  width: 700px;
   height: 600px;
   background-color: black;
   background-image: url("../../../public/hotel.png");
@@ -59,32 +59,44 @@
   color: #000;
 }
 
+
 .login-container label {
   display: block;
   text-align: left;
   margin-bottom: 8px;
   font-size: 14px;
   color: #333;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .login-container input {
   width: 100%;
-  padding: 15px 0;
+  padding: 15px; /* Giữ padding đồng nhất cho cả 4 cạnh */
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
+  color: #333;
+  box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước tổng thể */
+}
+.login-container input#username,#password{
+  height: 55.6px;
+  margin: 0px 0px 15px;
+  padding: 15px;
+  width: 360px;
 }
 
 .login-container input::placeholder {
   color: #aaa;
-  padding-left: 10px;
 }
 
-.login-container input {
-  color: #aaa;
-  padding-left: 10px;
+.login-container input:focus {
+  border-color: #007bff; /* Màu viền khi trường nhập liệu được chọn */
+  outline: none; /* Loại bỏ o utline mặc định khi trường được chọn */
 }
+
+
 
 .login-container .login-button {
   width: 100%;

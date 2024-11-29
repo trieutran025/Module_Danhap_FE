@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
-import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
+// import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
 import '../componet/css/Login.css';
 
 const Login = ({ onLogin }) => {
@@ -25,11 +25,11 @@ const Login = ({ onLogin }) => {
         console.log(response.token)
         if (userRole) {
           sessionStorage.setItem('role', userRole);
-          console.log('User role:', localStorage.getItem('role'));
-          console.log("token",localStorage.getItem('token'))
-          console.log(userRole)
-          console.log(response.
-            access_token)
+          // console.log('User role:', localStorage.getItem('role'));
+          // console.log("token",localStorage.getItem('token'))
+          // console.log(userRole)
+          // console.log(response.
+          //   access_token)
           console.log(response)
           onLogin(userRole); // Cập nhật role khi login thành công
 
@@ -114,8 +114,8 @@ const Login = ({ onLogin }) => {
 
           {/* Google Login Button */}
           <div className="social-login">
-          <a href="https://www.facebook.com" className="fb-login-link">
-              <i className="fab fa-facebook"></i> Login with Google
+          <a href="https://www.facebook.com" className="google-login-link">
+              <i className="fab fa-google"></i> Login with Google
             </a>
           </div>
 
