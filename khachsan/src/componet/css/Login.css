@@ -1,20 +1,17 @@
 .App {
   text-align: center;
   background-color: #F5F5F5;
-}
-
-.App-logo {
+  }
+  .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
+  @media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  }
+  }
+  .App-header {
   background-color: #F5F5F5;
   min-height: 100vh;
   display: flex;
@@ -23,82 +20,74 @@
   justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: black;
-}
 
-.app-image {
-  width: 700px;
+  }
+  .app-image {
+  width: 742px;
+
   height: 600px;
   background-color: black;
   background-image: url("../../../public/hotel.png");
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.app-moon {
+  }
+  .app-moon {
   fill: #FFFFFF;
   stroke: #F5F5F5;
   width: 654px;
   height: 511px;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 20px;
-}
-
-.login-container {
+  }
+  .login-container {
   width: 400px;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-}
-
-.login-container h1 {
+  }
+  .login-container h1 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #000;
-}
 
+  }
+  .login-container label {
 
-.login-container label {
   display: block;
   text-align: left;
   margin-bottom: 8px;
   font-size: 14px;
   color: #333;
-  padding-left: 0;
-  margin-left: 0;
-}
 
-.login-container input {
+  }
+  .login-container input {
+
   width: 100%;
   padding: 15px; /* Giữ padding đồng nhất cho cả 4 cạnh */
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-  color: #333;
-  box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước tổng thể */
-}
-.login-container input#username,#password{
-  height: 55.6px;
-  margin: 0px 0px 15px;
-  padding: 15px;
-  width: 360px;
-}
 
-.login-container input::placeholder {
+  }
+  .login-container input#username,#password{
+    height: 55.6px;
+    margin: 0px 0px 15px;
+    padding: 15px;
+    width: 360px;
+    }
+  .login-container input::placeholder {
   color: #aaa;
-}
-
-.login-container input:focus {
-  border-color: #007bff; /* Màu viền khi trường nhập liệu được chọn */
-  outline: none; /* Loại bỏ o utline mặc định khi trường được chọn */
-}
-
-
-
-.login-container .login-button {
+  padding-left: 10px;
+  }
+  .login-container input {
+  color: #aaa;
+  padding-left: 10px;
+  }
+  .login-container .login-button {
   width: 100%;
   padding: 10px;
   background-color: #4CAF50;
@@ -107,29 +96,25 @@
   color: white;
   font-size: 16px;
   cursor: pointer;
-}
-
-.login-container .login-button:hover {
+  }
+  .login-container .login-button:hover {
   background-color: #45a049;
-}
-
-.login-container a {
+  }
+  .login-container a {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #000;
   text-decoration: none;
-}
-
-.login-container a:hover {
+  }
+  .login-container a:hover {
   text-decoration: underline;
-}
-.social-login {
+  }
+  .social-login {
   margin-top: 20px;
-}
-
-.fb-login-link,
-.google-login-link {
+  }
+  .fb-login-link,
+  .google-login-link {
   display: inline-block;
   width: auto; 
   padding: 8px 15px; 
@@ -140,20 +125,14 @@
   text-decoration: none;
   color: white;
   border-radius: 5px; 
-}
-
-
-.fb-login-link {
+  }
+  .fb-login-link {
   background-color: #3b5998;
-}
-
-.google-login-link {
+  }
+  .google-login-link {
   background-color: #db4437;
-}
-
-.fb-login-link i,
-.google-login-link i {
+  }
+  .fb-login-link i,
+  .google-login-link i {
   margin-right: 10px;
-}
-
-
+  }

@@ -1,6 +1,5 @@
-  import React from 'react';
-  import '../../src/componet/css/homePage.css';  // Import file CSS dành riêng cho HomePage
-
+import React from 'react';
+import '../../src/componet/css/homePage.css'; // import file css dành riêng cho homepage
 
 function Home() {
   const rooms = [
@@ -29,12 +28,12 @@ function Home() {
       price: 300,
     },
     {
-      id: 4, 
-      name: "Executive Suite", 
-      image: "https://decoxdesign.com/upload/images/penthouse-ecogreen-85m2-phong-ngu-02-decox-design.jpg", 
+      id: 4,
+      name: "Executive Suite",
+      image: "https://decoxdesign.com/upload/images/penthouse-ecogreen-85m2-phong-ngu-02-decox-design.jpg",
       adults: 2,
       children: 2,
-      price: 400, 
+      price: 400,
     },
   ];
 
@@ -43,7 +42,7 @@ function Home() {
       <div className="Home-container">
         <div>Room</div>
         <div className="Home-login">
-          <a href="/">Login</a>
+          <a href="/login">Login</a>
           <a href="/register">Register</a>
         </div>
       </div>
@@ -84,3 +83,4 @@ function Home() {
 }
 
 export default Home;
+

@@ -7,23 +7,25 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-}
-/* Code input */
-input#fullName,#email,#password,#confirmPassword{
+
+  }
+  /* Code input */
+  input#fullName,#email,#password,#confirmPassword{
   width: 360px;
   height: 55.6px;
-}
-.container {
+  }
+  .container {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-}
+  }
+  .card {
 
-.card {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
+
 }
 
 .card-title {
@@ -50,18 +52,40 @@ label {
 }
 
 input {
+
+  }
+  .card-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  }
+  .registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  }
+  .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  }
+  label {
+  font-size: 14px;
+  color: #555;
+  }
+  input {
+
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-}
 
-input:focus {
+  }
+  input:focus {
   outline: none;
   background-color: #e6f3ff;
-}
-
-.submit-btn {
+  }
+  .submit-btn {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -70,24 +94,21 @@ input:focus {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
-}
 
-.submit-btn:hover {
+  }
+  .submit-btn:hover {
   background-color: #45a049;
-}
-
-.login-link {
+  }
+  .login-link {
   text-align: center;
   margin-top: 20px;
-}
-
-.login-link a {
+  }
+  .login-link a {
   color: #1a73e8;
   text-decoration: none;
   font-size: 14px;
-}
-
-.login-link a:hover {
+  }
+  .login-link a:hover {
   text-decoration: underline;
-}
+  }
 

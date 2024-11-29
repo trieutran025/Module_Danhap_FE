@@ -11,7 +11,7 @@
   import AdminDashboard from "../src/componet/AdminDashboard";
   import CustomerManager from "./componet/CustomerManagement";
   import Register from "./componet/Register";
-  import EmployeeManagement from "./componet/EmployeeManagement";
+  import ManagerDashboard from "./componet/manager/ManagerDashboard";
 
   const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(sessionStorage.getItem('token') !== null);
@@ -60,10 +60,10 @@
             }
           />
           <Route
-            path="/employee-dashboard"
+            path="/manager-dashboard"
             element={
               isAuthenticated && role === "ROLE_MANAGER" ? (
-                <EmployeeManagement />
+                < ManagerDashboard/>
               ) : (
                 <Navigate to="/login" />
               )
