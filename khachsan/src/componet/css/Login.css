@@ -20,9 +20,11 @@
   justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: black;
+
   }
   .app-image {
   width: 742px;
+
   height: 600px;
   background-color: black;
   background-image: url("../../../public/hotel.png");
@@ -50,21 +52,26 @@
   font-size: 24px;
   margin-bottom: 20px;
   color: #000;
+
   }
   .login-container label {
+
   display: block;
   text-align: left;
   margin-bottom: 8px;
   font-size: 14px;
   color: #333;
+
   }
   .login-container input {
+
   width: 100%;
-  padding: 15px 0;
+  padding: 15px; /* Giữ padding đồng nhất cho cả 4 cạnh */
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
+
   }
   .login-container input#username,#password{
     height: 55.6px;

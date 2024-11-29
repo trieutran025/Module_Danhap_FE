@@ -1,5 +1,7 @@
 import '../componet/css/Register.css'
 function Register() {
+
+  
 return (
 <>
 <div class="container">

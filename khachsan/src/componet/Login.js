@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService'; // Đảm bảo import đúng đường dẫn
-// import { GoogleLogin } from '@react-oauth/google';  // Import Google OAuth library
+
 import '../componet/css/Login.css';
 const Login = ({ onLogin }) => {
+
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [isLoading, setIsLoading] = useState(false);
