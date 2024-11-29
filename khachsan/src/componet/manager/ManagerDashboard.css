@@ -186,8 +186,8 @@ body {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc; /* Viền xám nhạt */
-  border-radius: 8px; /* Bo góc */
+  border: 1px solid #ccc; 
+  border-radius: 8px; 
   font-size: 1rem;
 }
 
@@ -196,23 +196,23 @@ body {
   font-size: 1rem;
   margin-right: 10px;
   border: none;
-  border-radius: 8px; /* Bo góc */
+  border-radius: 8px; 
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .add-employee-form button[type="submit"] {
-  background-color: #4CAF50; /* Nút lưu màu xanh lá */
+  background-color: #4CAF50; 
   color: white;
 }
 
 .add-employee-form button[type="submit"]:hover {
-  background-color: #45a049; /* Màu xanh đậm hơn khi hover */
-  transform: scale(1.05); /* Phóng to nhẹ */
+  background-color: #45a049; 
+  transform: scale(1.05); 
 }
 
 .add-employee-form button[type="button"] {
-  background-color: #e74c3c; /* Nút hủy màu đỏ */
+  background-color: #e74c3c; 
   color: white;
 }
 
@@ -221,7 +221,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ====================== Responsive Design ====================== */
+
 @media (max-width: 768px) {
   .admin-dashboard {
     padding: 20px;
@@ -257,4 +257,45 @@ body {
     flex-direction: column;
     align-items: center;
   }
+}
+.view-button {
+  background-color: #17a2b8; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.view-button:hover {
+  background-color: #138496; 
+}
+
+.edit-button {
+  background-color: #ffc107; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.edit-button:hover {
+  background-color: #e0a800; 
+}
+
+
+.delete-button {
+  background-color: #dc3545; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.delete-button:hover {
+  background-color: #c82333; 
 }
