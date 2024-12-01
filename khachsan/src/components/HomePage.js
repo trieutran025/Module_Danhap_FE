@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../src/componet/css/homePage.css'; // import file css dành riêng cho homepage
+import '../../src/components/css/homePage.css'; // import file css dành riêng cho homepage
 
 function Home() {
   const rooms = [

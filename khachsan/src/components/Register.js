@@ -1,4 +1,4 @@
-import '../componet/css/Register.css'
+import './css/Register.css'
 function Register() {
 
   

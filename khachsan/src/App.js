@@ -1,4 +1,4 @@
-  import "./App.css";
+import "./App.css";
   import React, { useState, useEffect } from 'react';
   import {
     BrowserRouter as Router,
@@ -6,12 +6,12 @@
     Route,
     Navigate,
   } from "react-router-dom";
-  import HomePage from "../src/componet/HomePage";
-  import LoginPage from "../src/componet/Login";
-  import AdminDashboard from "../src/componet/AdminDashboard";
-  import CustomerManager from "./componet/CustomerManagement";
-  import Register from "./componet/Register";
-  import ManagerDashboard from "./componet/manager/ManagerDashboard";
+  import HomePage from "../src/components/HomePage";
+  import LoginPage from "../src/components/Login";
+  import AdminDashboard from "../src/components/AdminDashboard";
+  import CustomerManager from "./components/CustomerManagement";
+  import Register from "./components/Register";
+  import ManagerDashboard from "./components/manager/ManagerDashboard";
 
   const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(sessionStorage.getItem('token') !== null);

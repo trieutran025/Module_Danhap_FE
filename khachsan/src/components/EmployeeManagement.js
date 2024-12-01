@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../componet/css/EmployeeManagement.css';  // Assuming the CSS file is in the same directory
+import '../components/css/EmployeeManagement.css';  // Assuming the CSS file is in the same directory
 
 const API_URL = 'http://localhost:5000/api/employees'; // Example API URL
 
