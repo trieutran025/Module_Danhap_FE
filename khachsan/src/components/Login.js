@@ -40,6 +40,9 @@ break;
 case 'ROLE_MANAGER':
 navigate('/manager-dashboard');
 break;
+case 'ROLE_RECEPTIONIST':
+navigate('/receptionist-dashboard');
+break;
 default:
 navigate('/');
 }
