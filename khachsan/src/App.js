@@ -12,6 +12,7 @@ import "./App.css";
   import CustomerManager from "./components/CustomerManagement";
   import Register from "./components/Register";
   import ManagerDashboard from "./components/manager/ManagerDashboard";
+  import Receptionist from "./components/receptionist/Receptionist";
 
   const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(sessionStorage.getItem('token') !== null);
@@ -44,6 +45,16 @@ import "./App.css";
             element={
               isAuthenticated && role === "ROLE_ADMIN" ? (
                 <AdminDashboard/>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/receptionist-dashboard"
+            element={
+              isAuthenticated && role === "ROLE_RECEPTIONIST" ? (
+                <Receptionist/>
               ) : (
                 <Navigate to="/login" />
               )
