@@ -1,39 +1,39 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ManagerDashboard.css";
-import { fetchReceptionist } from "../../services/MangaerService";
+import "../components/css/AdminDashboard.css";
+import { fetchCustomer } from "../services/ReceptionService";
 import { debounce } from "lodash";
-import authService from "../../services/authService"
+import authService from "../services/authService"
 // Component hiển thị bảng nhân viên
-const EmployeeTable = ({ employees, onEdit, onDelete }) => (
+const CustomerTable = ({ customers }) => (
   <table className="employee-table">
     <thead>
       <tr>
         <th>Tên</th>
         <th>Email</th>
-        <th>Chức vụ</th>
+        <th>Vai trò</th>
         <th>Số điện thoại</th>
         <th>Địa chỉ</th>
       </tr>
     </thead>
     <tbody>
-      {employees.map((employee) => (
-        <tr key={employee.id}>
-          <td>{employee.name}</td>
-          <td>{employee.email}</td>
-          <td>{employee.roleName?.[0]?.roleName || "Không có vai trò"}</td>
-          <td>{employee.phone}</td>
-          <td>{employee.address}</td>
+      {customers.map((customer) => (
+        <tr key={customer.id}>
+          <td>{customer.name}</td>
+          <td>{customer.email}</td>
+          <td>{customer.roleName?.[0]?.roleName || "Không có vai trò"}</td>
+          <td>{customer.phone}</td>
+          <td>{customer.address}</td>
         </tr>
       ))}
     </tbody>
   </table>
 );
-const ManagerDashboard = () => {
-  const [activeTab, setActiveTab] = useState("employees");
-  const [employees, setEmployees] = useState([]);
+const ReceptionDashboad = () => {
+  const [activeTab, setActiveTab] = useState("customers");
+  const [customers, setcustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editingEmployee, setEditingEmployee] = useState(null);
+  const [editingcustomer, setEditingcustomer] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -45,32 +45,32 @@ const ManagerDashboard = () => {
 
   const handleSearch = debounce((term) => setSearchTerm(term), 500);
   useEffect(() => {
-    const loadEmployees = async () => {
+    const loadcustomers = async () => {
       setLoading(true);
       try {
         if (currentPage > totalPages) setCurrentPage(1);
-        const data = await fetchReceptionist(currentPage, itemsPerPage);
-        setEmployees(data.content);
+        const data = await fetchCustomer(currentPage, itemsPerPage);
+        setcustomers(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
-        console.error("Error fetching employees:", error);
+        console.error("Error fetching customers:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadEmployees();
+    loadcustomers();
   }, [currentPage, totalPages]);
-  const filteredEmployees = useMemo(
+  const filteredcustomers = useMemo(
     () =>
-      employees.filter((employee) => {
-        const name = employee.name || "";
-        const email = employee.email || "";
+      customers.filter((customer) => {
+        const name = customer.name || "";
+        const email = customer.email || "";
         return (
           name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           email.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }),
-    [employees, searchTerm]
+    [customers, searchTerm]
   );
   const handleLogout = async () => {
     try {
@@ -83,16 +83,15 @@ const ManagerDashboard = () => {
   return (
     <div className="admin-dashboard">
       <header className="header">
-        <h1>Manager Dashboard</h1>
+        <h1>Receptionist Dashboard</h1>
         <button className="button logout-button" onClick={handleLogout}>
           Đăng xuất
         </button>
       </header>
 
 
-
       <div
-        className={`tab-content ${activeTab === "employees" ? "active" : ""}`}
+        className={`tab-content ${activeTab === "customers" ? "active" : ""}`}
       >
         {loading ? (
           <p>Đang tải danh sách nhân viên...</p>
@@ -107,10 +106,10 @@ const ManagerDashboard = () => {
                 className="search-input"
               />
             </div>
-            <EmployeeTable
-              employees={filteredEmployees}
-              onEdit={(employee) => {
-                setEditingEmployee(employee);
+            <CustomerTable
+              customers={filteredcustomers}
+              onEdit={(customer) => {
+                setEditingcustomer(customer);
                 setIsFormVisible(true);
               }}
             />
@@ -137,4 +136,4 @@ const ManagerDashboard = () => {
   );
 };
 
-export default ManagerDashboard;
+export default ReceptionDashboad;

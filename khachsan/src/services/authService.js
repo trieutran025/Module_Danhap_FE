@@ -1,31 +1,21 @@
 import axios from 'axios';
 
 // URL API gốc
-const API_URL = 'http://localhost:8080/login';
+const API_URL = 'http://localhost:8080';
 
 // Service đăng nhập
 const login = async (username, password) => {
-  try { 
-    // Gọi API đăng nhập
-    const response = await axios.post(API_URL, {
+  try {
+    const response = await axios.post(`${API_URL}/login`, {
       username,
       password,
     });
 
-    // // Kiểm tra và lưu token, vai trò, thời gian hết hạn vào localStorage
-    // if (response.access_token) {
-    //   localStorage.setItem('access_token', response.access_token);
-    // }
-    // if (response.data.roles) {
-    //   localStorage.setItem('role', response.data.roles[0]); // Giả định có ít nhất 1 vai trò
-    // }
-
-    return response.data; // Trả về dữ liệu phản hồi để xử lý vai trò, trạng thái, v.v.
+    return response.data; // Trả về dữ liệu phản hồi
   } catch (error) {
     let errorMessage = 'Không thể kết nối tới máy chủ';
 
     if (error.response) {
-      // Xử lý các mã trạng thái lỗi cụ thể
       switch (error.response.status) {
         case 401:
           errorMessage = 'Sai tên đăng nhập hoặc mật khẩu';
@@ -44,43 +34,65 @@ const login = async (username, password) => {
       console.error(errorMessage);
     }
 
-    // Trả về thông báo lỗi để hiển thị ở giao diện
     throw new Error(errorMessage);
   }
 };
-const logout = async () => {
+
+// Service đăng ký
+const register = async (accountReqDTO, inforUserDto) => {
   try {
-    // Gửi yêu cầu POST đến API logout
-    const response = await axios.post('http://localhost:8080/logout');
-
-    // Kiểm tra nếu đăng xuất thành công
-    if (response.status === 200 ) {
-      console.log("Đăng xuất thành công!");
-
-      // Xóa token khỏi localStorage
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('role');
-
-      // Chuyển hướng về trang login
-      window.location.href = '/login';
-    } else {
-      console.error("Lỗi khi đăng xuất:", response.data);
-    }
+    const response = await axios.post(`${API_URL}/register`, {
+      accountReqDTO,
+      inforUserDto,
+    });
+    return response.data; // Return the response data if successful
   } catch (error) {
-    console.error("Lỗi khi đăng xuất:", error);
+    let errorMessage = 'Không thể kết nối tới máy chủ';
+
+    if (error.response) {
+      switch (error.response.status) {
+        case 400:
+          errorMessage = 'Dữ liệu đăng ký không hợp lệ';
+          break;
+        case 409:
+          errorMessage = 'Tên người dùng hoặc email đã tồn tại';
+          break;
+        default:
+          errorMessage = `Lỗi: ${error.response.statusText}`;
+      }
+    }
+
+    throw new Error(errorMessage); // Throw the error so it can be caught in the component
   }
 };
 
+// Service đăng xuất
+const logout = async () => {
+  try {
+    const response = await axios.post(`${API_URL}/logout`);
 
+    if (response.status === 200) {
+      console.log('Đăng xuất thành công!');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('role');
+      window.location.href = '/login';
+    } else {
+      console.error('Lỗi khi đăng xuất:', response.data);
+    }
+  } catch (error) {
+    console.error('Lỗi khi đăng xuất:', error);
+  }
+};
+
+// Lấy token từ sessionStorage
 export function getToken() {
   let token = sessionStorage.getItem('token');
-  if (!token) {
-      token = sessionStorage.getItem('token');
-  }
   return token;
 }
 
+// Xuất các service
 export default {
   login,
-  logout
+  logout,
+  register, // Thêm hàm register vào export
 };

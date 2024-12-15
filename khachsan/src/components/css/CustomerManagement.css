@@ -1,84 +1,149 @@
-/* CustomerManagement.css */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #ecf0f1;
+  --text-color: #34495e;
+  --header-color: #2c3e50;
+}
 
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+body, html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.customer-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: var(--header-color);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.logout-button {
+  background-color: #FF6F61;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.logout-button:hover {
+  background-color: #ff5f50;
+  transform: translateY(-2px);
+}
+
+.customer-info-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.customer-info-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.customer-info-title {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.customer-info-field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.customer-info-label {
+  position: absolute;
+  left: 2.5rem;
+  top: 0.5rem;
+  padding: 0 0.25rem;
+  background-color: white;
+  transition: 0.2s;
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.customer-info-input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.customer-info-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.customer-info-input:focus + .customer-info-label,
+.customer-info-input:not(:placeholder-shown) + .customer-info-label {
+  top: -0.5rem;
+  left: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: white;
+  padding: 0 0.25rem;
+  color: var(--primary-color);
+}
+
+.customer-info-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .customer-info-card {
+    padding: 1.5rem;
   }
-  
-  h2 {
-    text-align: center;
-    margin-top: 20px;
+
+  .customer-info-title {
+    font-size: 1.25rem;
   }
-  
-  /* Error message styles */
-  .error {
-    color: #3D9B1C;
-    text-align: center;
-    margin-bottom: 20px;
+
+  .customer-info-input {
+    font-size: 0.875rem;
   }
-  
-  /* Form styles */
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+
+  .customer-info-label {
+    font-size: 0.75rem;
   }
-  
-  input[type="text"],
-  input[type="email"] {
-    padding: 10px;
-    margin: 5px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  /* Table styles */
-  table {
-    width: 80%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Loading message styles */
-  .loading {
-    text-align: center;
-    margin-top: 20px;
-  }
+}
+
